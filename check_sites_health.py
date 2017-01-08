@@ -1,5 +1,5 @@
 import requests
-import argparse
+import sys
 from whois import whois
 from urllib.parse import urlparse
 import datetime
@@ -21,26 +21,23 @@ def is_server_respond_with_200(url):
 
 
 def get_domain_expiration_date(domain_name):
-    print(domain_name)
     expiration_date = whois(domain_name)['expiration_date']
     if isinstance(expiration_date, list):
         return expiration_date[0]
     return expiration_date
 
 
-def get_arguments():
-    parser = argparse.ArgumentParser(description='Check site...')
-    parser.add_argument('filepath', help='Put path to file with urls')
-    args = parser.parse_args()
-    return args
+def get_file_path_with_domains():
+    return sys.argv[1]
 
 
 if __name__ == '__main__':
-    args = get_arguments()
-    urls = load_urls4check(args.filepath)
+    file_path = get_file_path_with_domains()
+    urls = load_urls4check(file_path)
+    days_in_month = 30
     for url in urls:
         expiration_date = get_domain_expiration_date(urlparse(url).netloc)
-        one_month = datetime.timedelta(days=30)
+        one_month = datetime.timedelta(days=days_in_month)
         next_month_date = datetime.datetime.today() + one_month
         if next_month_date < expiration_date and is_server_respond_with_200(url):
             print("This site:{0} is able to work".format(url)) 
