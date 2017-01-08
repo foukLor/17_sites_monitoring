@@ -28,11 +28,16 @@ def get_domain_expiration_date(domain_name):
 
 
 def get_file_path_with_domains():
-    return sys.argv[1]
+    if len(sys.argv) == 1:
+        return None
+    else:
+        return sys.argv[1]
 
 
 if __name__ == '__main__':
     file_path = get_file_path_with_domains()
+    if file_path is None:
+        exit()
     urls = load_urls4check(file_path)
     days_in_month = 30
     for url in urls:
