@@ -37,6 +37,7 @@ def get_file_path_with_domains():
 if __name__ == '__main__':
     file_path = get_file_path_with_domains()
     if file_path is None:
+        print("You forgot about a path to the file which contains urls.")
         exit()
     urls = load_urls4check(file_path)
     days_in_month = 30
@@ -45,6 +46,6 @@ if __name__ == '__main__':
         one_month = datetime.timedelta(days=days_in_month)
         next_month_date = datetime.datetime.today() + one_month
         if next_month_date < expiration_date and is_server_respond_with_200(url):
-            print("This site:{0} is able to work".format(url)) 
+            print("This site:{0} is able to work.".format(url)) 
         else:
             print("{0} has problems".format(url))
